@@ -1,0 +1,23 @@
+.separator {
+  border-top: 3px solid rgb(0, 0, 0);
+}
+.ColorLine {
+  margin-top: 10px;
+  width: 500px;
+}
+.ColorLineType {
+  display: flex;
+  flex-direction: column;
+}
+.ColorLineCodeAndCopy {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 2rem;
+}
+.ColorLineInput {
+  flex: 1;
+  border-width: 0;
+  background: rgba(0, 0, 0, 0);
+}

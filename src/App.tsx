@@ -1,4 +1,4 @@
-import ColorBackground from './components/ColorBackground';
+import {ColorBackground} from './components/ColorBackground';
 import './App.css';
 
 function App() {
