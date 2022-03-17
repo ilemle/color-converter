@@ -7,6 +7,7 @@ import { RootState } from '../../store/redux/rootReducer';
 
 
 const ColorBackground: FC = () => {
+  //@ts-ignore
   const rgb = useSelector((state: RootState) => state.colors.rgb );
 
   return (

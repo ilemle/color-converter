@@ -20,7 +20,7 @@ type valueType = null | string | number | readonly string[] | undefined;
 function ColorLine(props: ColorLine) {
   const { type } = props;
 
-  const { rgb, hex, hsl, cmyk } = useSelector(
+  const { rgb, hex, hsl, cmyk, textColor } = useSelector(
     (state: RootState) => state.colors
   );
   const dispatch = useDispatch();
@@ -68,21 +68,22 @@ function ColorLine(props: ColorLine) {
 
   return (
     <div className={classes.ColorLine}>
-      <div className={classes.ColorLineType}>{type}</div>
+      <div style={{ color: textColor }} className={classes.ColorLineType}>
+        {type}
+      </div>
       <div className={classes.ColorLineCodeAndCopy}>
         <input
-          value={currentColor}
+          style={{ color: textColor }}
+          value={currentColor as any} // ругается на то, что может быть null
           onChange={(e) => colorChange(e.target.value)}
           className={classes.ColorLineInput}
         />
-        <div>copy</div>
+        <div style={{ color: textColor }}>copy</div>
       </div>
-      <div className={classes.separator} />
+      <div style={{ borderColor: textColor }} className={classes.separator} />
     </div>
   );
 }
 const ColorLineClasses = cn({});
 
 export { ColorLine };
-
-
