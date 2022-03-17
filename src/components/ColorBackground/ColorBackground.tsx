@@ -5,16 +5,12 @@ import { ColorInputWindow } from '../ColorInputWindow';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/redux/rootReducer';
 
-const ColorBackground: FC = () => {
-  const { rgb } = useSelector((state: RootState) => state.colors.colors);
 
-  // useEffect(() => {}, [rgb.r]);
+const ColorBackground: FC = () => {
+  const rgb = useSelector((state: RootState) => state.colors.rgb );
 
   return (
-    <div
-      style={{ backgroundColor: `rgb(${rgb?.r},${rgb?.g},${rgb?.b})` }}
-      className={classes.colorBackground}
-    >
+    <div style={{ backgroundColor: rgb }} className={classes.colorBackground}>
       <ColorInputWindow />
     </div>
   );

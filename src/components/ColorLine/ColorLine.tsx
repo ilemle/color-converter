@@ -3,52 +3,67 @@ import classes from './ColorLine.module.scss';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/redux/rootReducer';
-import { setColorRequestAction } from '../../store/redux/colorReducer';
-
-type typesColor = 'RGB' | 'HEX' | 'HSL' | 'SMYK' | 'PANTONE';
+import {
+  setHEXColorRequestAction,
+  setHSLColorRequestAction,
+  setRGBColorRequestAction,
+  setCMYKColorRequestAction,
+} from '../../store/redux/colorReducer';
+import { colorTypes } from '../../types';
 
 interface ColorLine {
-  type: typesColor;
+  type: colorTypes;
 }
+
+type valueType = null | string | number | readonly string[] | undefined;
 
 function ColorLine(props: ColorLine) {
   const { type } = props;
 
-  const { rgb, hex, hsl, smyk, pantone } = useSelector(
-    (state: RootState) => state.colors.colors
+  const { rgb, hex, hsl, cmyk } = useSelector(
+    (state: RootState) => state.colors
   );
   const dispatch = useDispatch();
 
-  const colorInputValue = (type: typesColor) => {
+  let currentColor = null;
+  switch (type) {
+    case 'RGB': {
+      currentColor = rgb;
+      break;
+    }
+    case 'HEX': {
+      currentColor = hex;
+      break;
+    }
+    case 'HSL': {
+      currentColor = hsl;
+      break;
+    }
+    case 'CMYK': {
+      currentColor = cmyk;
+      break;
+    }
+  }
+
+  function colorChange(colorValue: string) {
     switch (type) {
       case 'RGB': {
-        return `rgb(${rgb?.r},${rgb?.g},${rgb?.b})`;
+        dispatch(setRGBColorRequestAction(colorValue));
+        break;
       }
       case 'HEX': {
-        return `#${hex?.hex}`;
+        dispatch(setHEXColorRequestAction(colorValue));
+        break;
       }
       case 'HSL': {
-        return `hsl(${hsl?.h},${hsl?.s}%,${hsl?.l}%)`;
+        dispatch(setHSLColorRequestAction(colorValue));
+        break;
       }
-      case 'SMYK': {
-        return `smyk(${smyk?.s},${smyk?.m},${smyk?.y},${smyk?.k})`;
-      }
-      case 'PANTONE': {
-        return `pantone:${pantone?.pantone}`;
-      }
-      default: {
-        return 'azaz';
+      case 'CMYK': {
+        dispatch(setCMYKColorRequestAction(colorValue));
+        break;
       }
     }
-  };
-
-  const [inputValue, setInputValue] = useState(colorInputValue(type));
-
-  function changeColor(inputElement: any) {
-    setInputValue(inputElement);
-    console.log('parametr', inputElement);
-
-    dispatch(setColorRequestAction(inputElement));
   }
 
   return (
@@ -56,11 +71,10 @@ function ColorLine(props: ColorLine) {
       <div className={classes.ColorLineType}>{type}</div>
       <div className={classes.ColorLineCodeAndCopy}>
         <input
-          value={inputValue}
-          onChange={(e) => changeColor(e.target.value)}
+          value={currentColor}
+          onChange={(e) => colorChange(e.target.value)}
           className={classes.ColorLineInput}
         />
-        {rgb?.r} {rgb?.b} {rgb?.g}
         <div>copy</div>
       </div>
       <div className={classes.separator} />
@@ -70,3 +84,5 @@ function ColorLine(props: ColorLine) {
 const ColorLineClasses = cn({});
 
 export { ColorLine };
+
+

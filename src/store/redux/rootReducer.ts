@@ -6,4 +6,4 @@ export const rootReducer=combineReducers({
     colors: colorReducer
 })
 
-export type RootState = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof rootReducer>;
