@@ -42,13 +42,14 @@ function getTextColor(HSLarray: [number, number, number]) {
     return el / 100;
   });
 
-  if ((HSL[0] < 0.55 && HSL[2] >= 0.5) || (HSL[0] >= 0.55 && HSL[2] >= 0.75)) {
-    console.log('white');
+  if (HSL[0] === 0 && HSL[1] === 0 && HSL[2] === 0) return '#FFFFFF';
+  if (HSL[0] === 255 && HSL[1] === 255 && HSL[2] === 255) {
+    return '#000000';
+  }
 
+  if ((HSL[0] < 0.55 && HSL[2] >= 0.5) || (HSL[0] >= 0.55 && HSL[2] >= 0.75)) {
     return '#000000';
   } else {
-    console.log('black');
-
     return '#FFFFFF';
   }
 }
@@ -97,24 +98,28 @@ export const colorReducer = (state = initialState, action: any) => {
       const HSL = convert.rgb.hsl(r, g, b);
       const HEX = convert.rgb.hex(r, g, b);
       const CMYK = convert.rgb.cmyk(r, g, b);
+      const textColor = getTextColor(_HSL);
       return {
         ...state,
         rgb: params,
         hsl: `hsl(${HSL[0]},${HSL[1]}%,${HSL[2]}%)`,
         hex: `#${HEX}`,
         cmyk: `cmyk(${CMYK[0]},${CMYK[1]},${CMYK[2]},${CMYK[3]})`,
+        textColor,
       };
     }
     case SET_HEX_COLOR_REQUEST: {
       const RGB = convert.hex.rgb(params);
       const HSL = convert.hex.hsl(params);
       const CMYK = convert.hex.cmyk(params);
+      const textColor = getTextColor(_HSL);
       return {
         ...state,
         hex: params,
         rgb: `rgb(${RGB[0]},${RGB[1]},${RGB[2]})`,
         hsl: `hsl(${HSL[0]},${HSL[1]}%,${HSL[2]}%)`,
         cmyk: `cmyk(${CMYK[0]},${CMYK[1]},${CMYK[2]},${CMYK[3]})`,
+        textColor,
       };
     }
     case SET_HSL_COLOR_REQUEST: {
@@ -122,12 +127,14 @@ export const colorReducer = (state = initialState, action: any) => {
       const RGB = convert.hsl.rgb([h, s, l]);
       const HEX = convert.hsl.hex([h, s, l]);
       const CMYK = convert.hsl.cmyk([h, s, l]);
+      const textColor = getTextColor(_HSL);
       return {
         ...state,
         hsl: params,
         rgb: `rgb(${RGB[0]},${RGB[1]},${RGB[2]})`,
         hex: `#${HEX}`,
         cmyk: `cmyk(${CMYK[0]},${CMYK[1]},${CMYK[2]},${CMYK[3]})`,
+        textColor,
       };
     }
     case SET_CMYK_COLOR_REQUEST: {
@@ -135,12 +142,14 @@ export const colorReducer = (state = initialState, action: any) => {
       const RGB = convert.cmyk.rgb([c, m, y, k]);
       const HEX = convert.cmyk.hex([c, m, y, k]);
       const HSL = convert.cmyk.hsl([c, m, y, k]);
+      const textColor = getTextColor(_HSL);
       return {
         ...state,
         cmyk: params,
         rgb: `rgb(${RGB[0]},${RGB[1]},${RGB[2]})`,
         hex: `#${HEX}`,
         hsl: `hsl(${HSL[0]},${HSL[1]}%,${HSL[2]}%)`,
+        textColor,
       };
     }
   }
